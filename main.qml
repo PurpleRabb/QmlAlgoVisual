@@ -24,9 +24,7 @@ Window {
 
         onSort_valuesChanged: {
             if (Sort.values.length !== 0) {  //call getValue
-                //console.log("onSort_valuesChanged");
-                barSeries.clear()
-                barSeries.append(name.text,sort_values) //call getValue
+                valueSet.values = sort_values
             }
         }
 
@@ -49,10 +47,14 @@ Window {
                 max: barSeries.maxValue
             }
 
+            BarSet {
+                id: valueSet
+                label: name.text
+                values: Utils.getRandomValues(barCategories.count,barSeries.maxValue)
+            }
+
             function refresh() {
-                barSeries.clear()
-                barSeries.values = Utils.getRandomValues(barCategories.count,barSeries.maxValue)
-                barSeries.append(name.text, values);
+                valueSet.values = Utils.getRandomValues(barCategories.count,barSeries.maxValue)
             }
 
             Component.onCompleted: {
@@ -62,15 +64,13 @@ Window {
         }
     }
 
-
-
     RowLayout {
         anchors.top: chartView.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         Button {
             text: qsTr("Sort")
             onClicked: {
-                Sort.values = barSeries.values //setValue
+                Sort.values = valueSet.values //setValue
                 Sort.speed = speedInput.text
                 Sort.doAlgo(0)
             }
@@ -103,7 +103,6 @@ Window {
                 maximumLength: 5
             }
         }
-
     }
 
 }
