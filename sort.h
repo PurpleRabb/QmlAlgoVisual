@@ -6,35 +6,11 @@
 #include <QList>
 #include <QDebug>
 
-class BubbleWork : public QThread
+class Work : public QThread
 {
     Q_OBJECT
 
 public:
-    explicit BubbleWork(QObject *parent = nullptr) { }
-
-signals:
-    void updateValue();
-    void algofinished();
-
-public:
-    void run() override {
-        int len = values->length();
-        qDebug() << "values len:" << len;
-        for (int i=0; i < len - 1; i++) {
-            for (int j=0; j<len-1-i; j++) {
-                if ((*values)[j] > (*values)[j+1]) {
-                    int temp = (*values)[j];
-                    (*values)[j] = (*values)[j+1];
-                    (*values)[j+1] = temp;
-                    emit updateValue();
-                    msleep(_speed);
-                }
-            }
-        }
-        emit algofinished();
-    }
-
     void setValue(QList<int> *v)
     {
         this->values = v;
@@ -45,9 +21,72 @@ public:
         _speed = msec;
     }
 
-private:
-    QList<int> *values;
+signals:
+    void updateValue();
+    void algofinished();
+
+protected:
+    QList<int> *values = nullptr;
     quint32 _speed = 1000;
+};
+
+class BubbleWork : public Work
+{
+public:
+    explicit BubbleWork(QObject *parent = nullptr) { }
+
+public:
+    void run() override {
+        if (values == nullptr) {
+            emit algofinished();
+            return;
+        }
+        qsizetype len = values->length();
+        qDebug() << "values len:" << len;
+        for (int i=0; i < len - 1; i++) {
+            for (int j=0; j<len-1-i; j++) {
+                if ((*values)[j] > (*values)[j+1]) {
+                    std::swap((*values)[j],(*values)[j+1]);
+                    emit updateValue();
+                    msleep(_speed);
+                }
+            }
+        }
+        emit algofinished();
+    }
+};
+
+class SelectionWork : public Work
+{
+public:
+    explicit SelectionWork(QObject *parent = nullptr) { }
+
+public:
+    void run() override {
+        if (values == nullptr) {
+            emit algofinished();
+            return;
+        }
+        qsizetype len = values->length();
+        qDebug() << "values len:" << len;
+        //对数组a排序,length是数组元素数量
+        for( int i = 0; i < len; i++ ) {
+            // 找到从i开始到最后一个元素中最小的元素,k存储最小元素的下标.
+            int k = i;
+            for( int j = i + 1; j < len; j++ ) {
+                if( (*values)[j] < (*values)[k] )
+                { k = j; }
+            }
+
+            // 将最小的元素a[k] 和 开始的元素a[i] 交换数据.
+            if( k != i ) {
+                std::swap((*values)[k],(*values)[i]);
+            }
+            emit updateValue();
+            msleep(_speed);
+        }
+        emit algofinished();
+    }
 };
 
 class Sort : public QObject
@@ -74,20 +113,31 @@ signals:
 public slots:
     void algoFinished() {
         qDebug() << __LINE__ <<__func__;
-        bw->quit();
-        bw->wait();
+        currentWork->quit();
+        currentWork->wait();
         _status = Finished;
     }
 
 public:
     explicit Sort(QObject *parent = nullptr);
 
+    Q_INVOKABLE void switchAlgo(int algoNum)
+    {
+        qDebug() << "switchAlgo to:" << algoNum;
+        if (algoNum == 0) {
+            currentWork = bw;
+        }
+        if (algoNum == 1) {
+            currentWork = sw;
+        }
+    }
+
     Q_INVOKABLE void doAlgo(int algoNum)
     {
-        if(bw != nullptr && !bw->isRunning() && _status == Ready) {
-            qDebug() << "do algo";
+        if(currentWork != nullptr && !currentWork->isRunning() && _status == Ready) {
+            qDebug() << "do algo: " << algoNum;
             _status = Running;
-            bw->start();
+            currentWork->start();
         }
     }
 
@@ -95,8 +145,8 @@ public:
     {
         if (_status == Finished || _status == Running)
         {
-            bw->terminate();
-            bw->wait();
+            currentWork->terminate();
+            currentWork->wait();
             _status = Ready;
         }
 
@@ -114,21 +164,23 @@ public:
     void setSpeed(quint32 msec)
     {
         _speed = msec;
-        if (bw != nullptr && !bw->isRunning()) {
-            bw->setSpeed(_speed);
+        if (currentWork != nullptr && !currentWork->isRunning()) {
+            currentWork->setSpeed(_speed);
         }
     }
 
     void setValues(QList<int> v) {
-        if(bw != nullptr && !bw->isRunning()) {
+        if(currentWork != nullptr && !currentWork->isRunning()) {
             qDebug() << "setValues:" << v;
             this->values = v;
-            bw->setValue(&values);
+            currentWork->setValue(&values);
         }
     }
 
 private:
     BubbleWork *bw;
+    SelectionWork *sw;
+    Work *currentWork;
     QList<int> values;
     Status _status = Ready;
     quint32 _speed = 1000;
