@@ -4,6 +4,8 @@ import "Utils.js" as Utils
 ListView {
     id: view
     property var values: []
+    property int barCount: 0
+    property int maxValue: 0
     orientation: Qt.Horizontal
     layoutDirection: Qt.LeftToRight
     spacing: 3
@@ -45,7 +47,7 @@ ListView {
     }
 
     function refresh() {
-        values = Utils.getRandomValues(15,100)
+        values = Utils.getRandomValues(barCount,maxValue)
         updateValues(values)
         setDefaultColor()
     }

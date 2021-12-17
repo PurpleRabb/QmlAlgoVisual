@@ -20,9 +20,13 @@ Window {
 
         anchors.centerIn: parent
         leftMargin: 10
-        width: 400
+
         height: 200
-        values: Utils.getRandomValues(15,100)
+        barCount: 20
+        maxValue: 100
+        width: barCount * 25
+
+        values: Utils.getRandomValues(barCount,maxValue)
 
         onSort_valuesChanged: {
             if (Sort.values.length !== 0) {  //call getValue
