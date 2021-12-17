@@ -1,10 +1,10 @@
-import QtQuick 2.15
+import QtQuick 2.2
 import QtQuick.Window 2.15
-import QtCharts
+import QtCharts 2.3
 import "Utils.js" as Utils
 import Sort 1.0
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.3
 
 Window {
     width: 800
@@ -12,7 +12,88 @@ Window {
     visible: true
     title: qsTr("Alog")
 
-    ChartView {
+
+    MyChartView {
+        id: chartView
+        property var sort_values : Sort.values
+        property var sortList : ["Buble", "Selection"]
+
+        anchors.centerIn: parent
+        leftMargin: 10
+        width: 400
+        height: 200
+        values: Utils.getRandomValues(15,100)
+
+        onSort_valuesChanged: {
+            if (Sort.values.length !== 0) {  //call getValue
+                console.log(sort_values)
+                chartView.updateValues(sort_values)
+            }
+        }
+
+        Connections {
+            target: Sort
+            function onAlgoStatus(i,j) {
+                chartView.setSelectedColor(j,"blue");
+            }
+        }
+    }
+
+    RowLayout {
+        anchors.top: chartView.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        spacing: 6
+
+        ComboBox {
+            id: comboBox
+            model: chartView.sortList
+            focus: true
+            onActivated: {
+                console.log(currentIndex)
+                Sort.switchAlgo(currentIndex)
+            }
+        }
+
+        Button {
+            text: qsTr("Sort")
+            onClicked: {
+                Sort.values = chartView.values //setValue
+                Sort.speed = speedInput.text
+                Sort.doAlgo(comboBox.currentIndex)
+            }
+        }
+
+        Button {
+            text: qsTr("Reset")
+            id: btnReset
+            onClicked: {
+                chartView.refresh()
+                Sort.reset()
+            }
+        }
+
+        Label {
+            id: label
+            text: "speed:  "
+        }
+
+        Rectangle {
+            width: 50
+            height: btnReset.height
+            color: "lightgrey"
+            anchors.left:  label.right
+            border.color: "black"
+            TextInput {
+                anchors.centerIn: parent
+                id: speedInput
+                text: "100"
+                maximumLength: 5
+            }
+        }
+    }
+
+
+   /* ChartView {
         width: parent.width * 0.8
         height: parent.height * 0.8
         theme: ChartView.ChartThemeBrownSand
@@ -53,9 +134,10 @@ Window {
 
             BarSet {
                 id: valueSet
-                label: name.text
+                label: comboBox.textAt(comboBox.currentIndex)
                 values: Utils.getRandomValues(barCategories.count,barSeries.maxValue)
                 borderColor: "white"
+
             }
 
             function refresh() {
@@ -67,9 +149,9 @@ Window {
                 refresh()
             }
         }
-    }
+    } */
 
-    RowLayout {
+    /*RowLayout {
         anchors.top: chartView.bottom
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -119,7 +201,7 @@ Window {
                 maximumLength: 5
             }
         }
-    }
+    }*/
 
 }
 

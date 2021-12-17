@@ -24,6 +24,7 @@ public:
 signals:
     void updateValue();
     void algofinished();
+    void algoStatus(int i,int j);
 
 protected:
     QList<int> *values = nullptr;
@@ -48,6 +49,7 @@ public:
                 if ((*values)[j] > (*values)[j+1]) {
                     std::swap((*values)[j],(*values)[j+1]);
                     emit updateValue();
+                    //emit algoStatus(i,j);
                     msleep(_speed);
                 }
             }
@@ -73,15 +75,21 @@ public:
         for( int i = 0; i < len; i++ ) {
             // 找到从i开始到最后一个元素中最小的元素,k存储最小元素的下标.
             int k = i;
+
             for( int j = i + 1; j < len; j++ ) {
                 if( (*values)[j] < (*values)[k] )
-                { k = j; }
+                {
+                    k = j;
+                    emit algoStatus(k,k);
+                }
             }
 
             // 将最小的元素a[k] 和 开始的元素a[i] 交换数据.
             if( k != i ) {
                 std::swap((*values)[k],(*values)[i]);
+
             }
+
             emit updateValue();
             msleep(_speed);
         }
@@ -109,6 +117,7 @@ signals:
     void updateValue();
     void valuesChanged();
     void statusChanged();
+    void algoStatus(int i,int j);
 
 public slots:
     void algoFinished() {
