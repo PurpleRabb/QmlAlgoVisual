@@ -37,8 +37,14 @@ Window {
 
         Connections {
             target: Sort
-            function onAlgoStatus(i,j) {
-                chartView.setSelectedColor(j,"blue");
+            function onAlgoStatus(fromCppMsg) {
+                let _msg = JSON.parse(fromCppMsg)
+                for (let i=0; i < _msg.Marked.length; i++) {
+                    chartView.setSelectedColor(_msg.Marked[i],"blue");
+                }
+                for (let j=0; j < _msg.Restored.length; j++) {
+                    chartView.setSelectedColor(_msg.Restored[j],"red");
+                }
             }
         }
     }
@@ -71,8 +77,8 @@ Window {
             text: qsTr("Reset")
             id: btnReset
             onClicked: {
+                Sort.reset() //先停止，再刷新
                 chartView.refresh()
-                Sort.reset()
             }
         }
 
@@ -90,7 +96,7 @@ Window {
             TextInput {
                 anchors.centerIn: parent
                 id: speedInput
-                text: "100"
+                text: "300"
                 maximumLength: 5
             }
         }

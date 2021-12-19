@@ -22,10 +22,14 @@ ListView {
     }
 
     function setSelectedColor(_index,_color) {
+        if (_index < 0 || _index >= barCount)
+            return
         model.get(_index).BarColor = _color
     }
 
     function setSelectedValue(_index,_value) {
+        if (_index < 0 || _index >= barCount)
+            return
         let item = model.get(_index)
         item.Value = _value
         item.height = _value

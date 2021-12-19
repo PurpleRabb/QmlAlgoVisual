@@ -24,7 +24,7 @@ public:
 signals:
     void updateValue();
     void algofinished();
-    void algoStatus(int i,int j);
+    void algoStatus(QString);
 
 protected:
     QList<int> *values = nullptr;
@@ -46,14 +46,19 @@ public:
         qDebug() << "values len:" << len;
         for (int i=0; i < len - 1; i++) {
             for (int j=0; j<len-1-i; j++) {
+                emit algoStatus(QString("{\"Marked\":[%1,%2],\"Restored\":[%3,%4]}")
+                                .arg(j).arg(j+1).arg(-1).arg(-1));//标记要判断交换的两个数字
+                msleep(_speed);
                 if ((*values)[j] > (*values)[j+1]) {
                     std::swap((*values)[j],(*values)[j+1]);
                     emit updateValue();
-                    //emit algoStatus(i,j);
-                    msleep(_speed);
                 }
+                emit algoStatus(QString("{\"Marked\":[%1,%2],\"Restored\":[%3,%4]}")
+                                .arg(-1).arg(-1).arg(j).arg(-1));//将比较的前一个数字颜色还原
             }
         }
+        emit algoStatus(QString("{\"Marked\":[%1,%2],\"Restored\":[%3,%4]}")
+                        .arg(0).arg(-1).arg(-1).arg(-1)); //结束后将最开始的也涂掉
         emit algofinished();
     }
 };
@@ -80,7 +85,7 @@ public:
                 if( (*values)[j] < (*values)[k] )
                 {
                     k = j;
-                    emit algoStatus(k,k);
+                    //emit algoStatus(k,k);
                 }
             }
 
@@ -117,7 +122,7 @@ signals:
     void updateValue();
     void valuesChanged();
     void statusChanged();
-    void algoStatus(int i,int j);
+    void algoStatus(QString);
 
 public slots:
     void algoFinished() {
