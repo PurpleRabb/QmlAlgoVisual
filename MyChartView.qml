@@ -6,14 +6,15 @@ ListView {
     property var values: []
     property int barCount: 0
     property int maxValue: 0
+    property int barWidth: 20
+
     orientation: Qt.Horizontal
     layoutDirection: Qt.LeftToRight
-    spacing: 3
 
     model: ListModel {
         id: model
     }
-    delegate: BarRect{}
+    delegate: BarRect{ _barWidth: barWidth}
 
     Component.onCompleted: {
         for(let i = 0; i < values.length; i++) {

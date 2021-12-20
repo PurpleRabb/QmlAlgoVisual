@@ -5,6 +5,11 @@
 #include <QThread>
 #include <QList>
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
+
+#define MARK(val1,val2)
 
 class Work : public QThread
 {
@@ -27,6 +32,37 @@ signals:
     void algoStatus(QString);
 
 protected:
+    QJsonObject MsgBuilder() {
+        QJsonObject object;
+        QJsonArray list;
+        list.append(-1);
+        list.append(-1);
+        object.insert("Marked",list);
+        object.insert("Restored",list);
+        return object;
+    }
+
+    QString MARKED(int v1,int v2) {
+        QJsonObject msg = MsgBuilder();
+        QJsonArray marked = msg["Marked"].toArray();
+        marked[0] = v1;
+        marked[1] = v2;
+        msg["Marked"] = marked;
+        QJsonDocument jsonDoc(msg);
+        return QString(jsonDoc.toJson());
+    }
+
+    QString RESTORED(int v1,int v2) {
+        QJsonObject msg = MsgBuilder();
+        QJsonArray marked = msg["Restored"].toArray();
+        marked[0] = v1;
+        marked[1] = v2;
+        msg["Restored"] = marked;
+        QJsonDocument jsonDoc(msg);
+        return QString(jsonDoc.toJson());
+    }
+
+protected:
     QList<int> *values = nullptr;
     quint32 _speed = 1000;
 };
@@ -46,19 +82,16 @@ public:
         qDebug() << "values len:" << len;
         for (int i=0; i < len - 1; i++) {
             for (int j=0; j<len-1-i; j++) {
-                emit algoStatus(QString("{\"Marked\":[%1,%2],\"Restored\":[%3,%4]}")
-                                .arg(j).arg(j+1).arg(-1).arg(-1));//标记要判断交换的两个数字
+                emit algoStatus(MARKED(j,j+1));
                 msleep(_speed);
                 if ((*values)[j] > (*values)[j+1]) {
                     std::swap((*values)[j],(*values)[j+1]);
                     emit updateValue();
                 }
-                emit algoStatus(QString("{\"Marked\":[%1,%2],\"Restored\":[%3,%4]}")
-                                .arg(-1).arg(-1).arg(j).arg(-1));//将比较的前一个数字颜色还原
+                emit algoStatus(RESTORED(j,-1));//将比较的前一个数字颜色还原
             }
         }
-        emit algoStatus(QString("{\"Marked\":[%1,%2],\"Restored\":[%3,%4]}")
-                        .arg(0).arg(-1).arg(-1).arg(-1)); //结束后将最开始的也涂掉
+        emit algoStatus(MARKED(0,-1)); //结束后将最前面的也涂掉
         emit algofinished();
     }
 };
@@ -80,19 +113,17 @@ public:
         for( int i = 0; i < len; i++ ) {
             // 找到从i开始到最后一个元素中最小的元素,k存储最小元素的下标.
             int k = i;
-
             for( int j = i + 1; j < len; j++ ) {
                 if( (*values)[j] < (*values)[k] )
                 {
+                    emit algoStatus(MARKED(k,-1));//标记要判断交换的两个数字
                     k = j;
-                    //emit algoStatus(k,k);
                 }
             }
 
             // 将最小的元素a[k] 和 开始的元素a[i] 交换数据.
             if( k != i ) {
                 std::swap((*values)[k],(*values)[i]);
-
             }
 
             emit updateValue();

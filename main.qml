@@ -20,11 +20,12 @@ Window {
 
         anchors.centerIn: parent
         leftMargin: 10
-
+        spacing: 3
         height: 200
         barCount: 20
         maxValue: 100
-        width: barCount * 25
+
+        width: barCount * (barWidth + 5)
 
         values: Utils.getRandomValues(barCount,maxValue)
 

@@ -15,3 +15,4 @@ Sort::Sort(QObject *parent)
     connect(sw,SIGNAL(algofinished()),this,SLOT(algoFinished()));
     connect(sw,SIGNAL(algoStatus(QString)),this,SIGNAL(algoStatus(QString)));
 }
+
