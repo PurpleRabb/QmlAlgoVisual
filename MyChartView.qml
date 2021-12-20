@@ -7,6 +7,8 @@ ListView {
     property int barCount: 0
     property int maxValue: 0
     property int barWidth: 20
+    property string barColor: "red"
+    property string markedColor: "blue"
 
     leftMargin: spacing
     width: (barCount) * (barWidth + spacing) - spacing + 2 * leftMargin
@@ -20,7 +22,7 @@ ListView {
 
     Component.onCompleted: {
         for(let i = 0; i < values.length; i++) {
-            model.append({BarColor:"red", Value:values[i]})
+            model.append({BarColor:barColor, Value:values[i]})
         }
     }
 
@@ -49,7 +51,7 @@ ListView {
     function setDefaultColor() {
         for(let i = 0; i < model.count; i++) {
             let item = model.get(i)
-            item.BarColor = "red"
+            item.BarColor = barColor
         }
     }
 

@@ -24,6 +24,8 @@ Window {
         barCount: 15
         maxValue: 150
         barWidth: 20
+        barColor: "peachpuff"
+        markedColor: "plum"
 
         values: Utils.getRandomValues(barCount,maxValue)
 
@@ -39,10 +41,10 @@ Window {
             function onAlgoStatus(fromCppMsg) {
                 let _msg = JSON.parse(fromCppMsg)
                 for (let i=0; i < _msg.Marked.length; i++) {
-                    chartView.setSelectedColor(_msg.Marked[i],"blue");
+                    chartView.setSelectedColor(_msg.Marked[i], chartView.markedColor);
                 }
                 for (let j=0; j < _msg.Restored.length; j++) {
-                    chartView.setSelectedColor(_msg.Restored[j],"red");
+                    chartView.setSelectedColor(_msg.Restored[j], chartView.barColor);
                 }
             }
         }
