@@ -8,6 +8,8 @@ ListView {
     property int maxValue: 0
     property int barWidth: 20
 
+    leftMargin: spacing
+    width: (barCount) * (barWidth + spacing) - spacing + 2 * leftMargin
     orientation: Qt.Horizontal
     layoutDirection: Qt.LeftToRight
 

@@ -19,13 +19,11 @@ Window {
         property var sortList : ["Buble", "Selection"]
 
         anchors.centerIn: parent
-        leftMargin: 10
-        spacing: 3
+        spacing: 5
         height: 200
-        barCount: 20
-        maxValue: 100
-
-        width: barCount * (barWidth + 5)
+        barCount: 15
+        maxValue: 150
+        barWidth: 20
 
         values: Utils.getRandomValues(barCount,maxValue)
 
@@ -92,7 +90,6 @@ Window {
             width: 50
             height: btnReset.height
             color: "lightgrey"
-            anchors.left:  label.right
             border.color: "black"
             TextInput {
                 anchors.centerIn: parent
