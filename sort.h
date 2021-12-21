@@ -169,6 +169,10 @@ public:
     Q_INVOKABLE void switchAlgo(int algoNum)
     {
         qDebug() << "switchAlgo to:" << algoNum;
+        if (currentWork->isRunning()) {
+            currentWork->terminate();
+            currentWork->wait();
+        }
         if (algoNum == 0) {
             currentWork = bw;
         }
