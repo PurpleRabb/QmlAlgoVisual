@@ -1,9 +1,9 @@
-import QtQuick 2.2
-import QtQuick.Window 2.15
+import QtQuick 2.0
+import QtQuick.Window 2.3
 import QtCharts 2.3
 import "Utils.js" as Utils
 import Sort 1.0
-import QtQuick.Controls 2.5
+import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.3
 
 Window {
@@ -38,7 +38,7 @@ Window {
 
         Connections {
             target: Sort
-            function onAlgoStatus(fromCppMsg) {
+            onAlgoStatus: function onAlgoStatus(fromCppMsg) {
                 let _msg = JSON.parse(fromCppMsg)
                 for (let i=0; i < _msg.Marked.length; i++) {
                     chartView.setSelectedColor(_msg.Marked[i], chartView.markedColor);
@@ -52,8 +52,9 @@ Window {
 
     RowLayout {
         anchors.top: chartView.bottom
+        anchors.topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
-        spacing: 6
+        spacing: 3
 
         ComboBox {
             id: comboBox
@@ -85,7 +86,7 @@ Window {
 
         Label {
             id: label
-            text: "speed:  "
+            text: "speed: "
         }
 
         Rectangle {
@@ -103,7 +104,7 @@ Window {
     }
 
 
-   /* ChartView {
+    /* ChartView {
         width: parent.width * 0.8
         height: parent.height * 0.8
         theme: ChartView.ChartThemeBrownSand
