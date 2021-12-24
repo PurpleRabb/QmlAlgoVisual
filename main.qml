@@ -16,7 +16,7 @@ Window {
     MyChartView {
         id: chartView
         property var sort_values : Sort.values
-        property var sortList : ["Buble", "Selection"]
+        property var sortList : ["Buble", "Selection", "Insertion"]
 
         anchors.centerIn: parent
         spacing: 5

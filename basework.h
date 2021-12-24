@@ -9,6 +9,7 @@
 #include <QJsonDocument>
 
 #define MARK(val1,val2)
+#define VALUES (*values)
 
 class BaseWork : public QThread
 {

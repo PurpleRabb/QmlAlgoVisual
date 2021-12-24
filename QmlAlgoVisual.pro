@@ -7,6 +7,7 @@ QT += quick charts
 SOURCES += \
         basework.cpp \
         bubblework.cpp \
+        insertionsort.cpp \
         main.cpp \
         selectionsortwork.cpp \
         sort.cpp
@@ -27,5 +28,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     basework.h \
     bubblework.h \
+    insertionsort.h \
     selectionsortwork.h \
     sort.h

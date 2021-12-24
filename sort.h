@@ -7,6 +7,7 @@
 #include <QDebug>
 #include "bubblework.h"
 #include "selectionsortwork.h"
+#include "insertionsort.h"
 
 
 class Sort : public QObject
@@ -54,6 +55,9 @@ public:
         }
         if (algoNum == 1) {
             currentWork = sw;
+        }
+        if (algoNum == 2) {
+            currentWork = iw;
         }
     }
 
@@ -105,6 +109,7 @@ public:
 private:
     BubbleWork *bw;
     SelectionSortWork *sw;
+    InsertionSort *iw;
     BaseWork *currentWork;
     QList<int> values;
     Status _status = Ready;
