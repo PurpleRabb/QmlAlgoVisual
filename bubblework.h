@@ -7,7 +7,7 @@
 class BubbleWork : public BaseWork
 {
 public:
-    explicit BubbleWork(QObject *parent = nullptr):BaseWork(parent) { }
+    explicit BubbleWork(QObject *parent = nullptr):BaseWork(parent) { emit registerSort("Bubble",this); }
 
 public:
     void run() override;

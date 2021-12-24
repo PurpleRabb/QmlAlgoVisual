@@ -16,7 +16,7 @@ Window {
     MyChartView {
         id: chartView
         property var sort_values : Sort.values
-        property var sortList : ["Buble", "Selection", "Insertion"]
+        property var sortList : Sort.sortlist
 
         anchors.centerIn: parent
         spacing: 5
@@ -58,11 +58,20 @@ Window {
 
         ComboBox {
             id: comboBox
-            model: chartView.sortList
+            model: ListModel {
+                id: model
+            }
+
             focus: true
             onActivated: {
                 console.log(currentIndex)
-                Sort.switchAlgo(currentIndex)
+                Sort.switchAlgo(chartView.sortList[currentIndex])
+            }
+            Component.onCompleted: {
+                let len = chartView.sortList.length
+                for (let i = 0; i < len; i++) {
+                    model.append({text:chartView.sortList[i]})
+                }
             }
         }
 

@@ -7,7 +7,7 @@
 class SelectionSortWork : public BaseWork
 {
 public:
-    explicit SelectionSortWork(QObject *parent = nullptr):BaseWork(parent) { }
+    explicit SelectionSortWork(QObject *parent = nullptr):BaseWork(parent) { emit registerSort("Selection",this); }
     void run() override;
 };
 

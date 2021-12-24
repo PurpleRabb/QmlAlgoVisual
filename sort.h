@@ -17,6 +17,7 @@ class Sort : public QObject
     Q_PROPERTY(QList<int> values READ getValues WRITE setValues NOTIFY valuesChanged)
     Q_PROPERTY(Status status READ getStatus NOTIFY statusChanged)
     Q_PROPERTY(quint32 speed WRITE setSpeed)
+    Q_PROPERTY(QList<QString> sortlist READ getSortList NOTIFY sortlistChanged)
 
     QThread bubbleThread;
 
@@ -26,11 +27,18 @@ class Sort : public QObject
         Finished
     };
 
+    enum SortAlgo {
+        BUBBLE,
+        SELECTION,
+        INSERTION
+    };
+
 signals:
     void updateValue();
     void valuesChanged();
     void statusChanged();
     void algoStatus(QString);
+    void sortlistChanged();
 
 public slots:
     void algoFinished() {
@@ -40,25 +48,22 @@ public slots:
         _status = Finished;
     }
 
+    void registerSort(QString name, BaseWork *work) {
+        sMap[name] = work;
+        sortlist.append(name);
+    }
+
 public:
     explicit Sort(QObject *parent = nullptr);
 
-    Q_INVOKABLE void switchAlgo(int algoNum)
+    Q_INVOKABLE void switchAlgo(QString algo)
     {
-        qDebug() << "switchAlgo to:" << algoNum;
+        qDebug() << "switchAlgo to:" << algo;
         if (currentWork->isRunning()) {
             currentWork->terminate();
             currentWork->wait();
         }
-        if (algoNum == 0) {
-            currentWork = bw;
-        }
-        if (algoNum == 1) {
-            currentWork = sw;
-        }
-        if (algoNum == 2) {
-            currentWork = iw;
-        }
+        currentWork = sMap[algo];
     }
 
     Q_INVOKABLE void doAlgo(int algoNum)
@@ -90,6 +95,11 @@ public:
         return values;
     }
 
+    QList<QString> getSortList()
+    {
+        return sortlist;
+    }
+
     void setSpeed(quint32 msec)
     {
         _speed = msec;
@@ -112,6 +122,8 @@ private:
     InsertionSort *iw;
     BaseWork *currentWork;
     QList<int> values;
+    QList<QString> sortlist;
+    QMap<QString,BaseWork *> sMap;
     Status _status = Ready;
     quint32 _speed = 1000;
 };

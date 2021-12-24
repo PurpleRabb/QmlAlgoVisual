@@ -20,6 +20,7 @@ public:
         connect(this,SIGNAL(updateValue()),parent,SIGNAL(valuesChanged()));
         connect(this,SIGNAL(algofinished()),parent,SLOT(algoFinished()));
         connect(this,SIGNAL(algoStatus(QString)),parent,SIGNAL(algoStatus(QString)));
+        connect(this,SIGNAL(registerSort(QString, BaseWork *)),parent,SLOT(registerSort(QString,BaseWork *)));
     }
 
     void setValue(QList<int> *v)
@@ -36,6 +37,7 @@ signals:
     void updateValue();
     void algofinished();
     void algoStatus(QString);
+    void registerSort(QString,BaseWork *);
 
 protected:
     QJsonObject MsgBuilder() {

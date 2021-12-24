@@ -7,7 +7,7 @@
 class InsertionSort : public BaseWork
 {
 public:
-    explicit InsertionSort(QObject *parent = nullptr):BaseWork(parent) { }
+    explicit InsertionSort(QObject *parent = nullptr):BaseWork(parent) { emit registerSort("Insertion",this); }
 
 public:
     void run() override;
