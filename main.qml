@@ -3,7 +3,7 @@ import QtQuick.Window 2.3
 import QtCharts 2.3
 import "Utils.js" as Utils
 import Sort 1.0
-import QtQuick.Controls 1.2
+import QtQuick.Controls
 import QtQuick.Layouts 1.3
 
 Window {
@@ -72,6 +72,7 @@ Window {
                 for (let i = 0; i < len; i++) {
                     model.append({text:chartView.sortList[i]})
                 }
+                currentIndex = 0;
             }
         }
 

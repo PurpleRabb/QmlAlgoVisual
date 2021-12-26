@@ -8,6 +8,7 @@
 #include "bubblework.h"
 #include "selectionsortwork.h"
 #include "insertionsort.h"
+#include "shellsort.h"
 
 
 class Sort : public QObject
@@ -121,6 +122,7 @@ private:
     SelectionSortWork *sw;
     InsertionSort *iw;
     BaseWork *currentWork;
+    ShellSort *ss;
     QList<int> values;
     QList<QString> sortlist;
     QMap<QString,BaseWork *> sMap;

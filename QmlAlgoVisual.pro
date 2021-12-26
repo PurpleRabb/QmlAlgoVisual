@@ -10,6 +10,7 @@ SOURCES += \
         insertionsort.cpp \
         main.cpp \
         selectionsortwork.cpp \
+        shellsort.cpp \
         sort.cpp
 
 RESOURCES += qml.qrc
@@ -30,4 +31,5 @@ HEADERS += \
     bubblework.h \
     insertionsort.h \
     selectionsortwork.h \
+    shellsort.h \
     sort.h
