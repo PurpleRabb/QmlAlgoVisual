@@ -6,12 +6,12 @@ QT += quick charts
 
 SOURCES += \
         basework.cpp \
-        bubblework.cpp \
-        insertionsort.cpp \
+        algo/sort/bubblework.cpp \
+        algo/sort/insertionsort.cpp \
         main.cpp \
-        selectionsortwork.cpp \
-        shellsort.cpp \
-        sort.cpp
+        algo/sort/selectionsortwork.cpp \
+        algo/sort/shellsort.cpp \
+        algo/sort/sort.cpp
 
 RESOURCES += qml.qrc
 
@@ -28,8 +28,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     basework.h \
-    bubblework.h \
-    insertionsort.h \
-    selectionsortwork.h \
-    shellsort.h \
-    sort.h
+    algo/sort/bubblework.h \
+    algo/sort/insertionsort.h \
+    algo/sort/selectionsortwork.h \
+    algo/sort/shellsort.h \
+    algo/sort/sort.h

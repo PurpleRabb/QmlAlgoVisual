@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
-#include "sort.h"
+#include "algo/sort/sort.h"
 
 static QObject *getSort(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
