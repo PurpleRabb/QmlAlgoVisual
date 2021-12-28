@@ -7,6 +7,7 @@ Sort::Sort(QObject *parent)
     sw = new SelectionSortWork(this);
     iw = new InsertionSort(this);
     ss = new ShellSort(this);
+    ms = new MergeSort(this);
     currentWork = bw;
 }
 

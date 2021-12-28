@@ -5,6 +5,7 @@ QT += quick charts
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        algo/sort/mergesort.cpp \
         basework.cpp \
         algo/sort/bubblework.cpp \
         algo/sort/insertionsort.cpp \
@@ -27,6 +28,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    algo/sort/mergesort.h \
     basework.h \
     algo/sort/bubblework.h \
     algo/sort/insertionsort.h \
