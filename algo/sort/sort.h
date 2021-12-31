@@ -67,11 +67,12 @@ public:
             currentWork->wait();
         }
         currentWork = sMap[algo];
+        reset();
     }
 
     Q_INVOKABLE void doAlgo(int algoNum)
     {
-        if(currentWork != nullptr && !currentWork->isRunning() && _status == Ready) {
+        if((currentWork != nullptr && !currentWork->isRunning() && _status == Ready) || _status == Finished) {
             qDebug() << "do algo: " << algoNum;
             _status = Running;
             currentWork->start();
@@ -80,13 +81,13 @@ public:
 
     Q_INVOKABLE void reset()
     {
-        if (_status == Finished || _status == Running)
+        if (currentWork->isRunning())
         {
             currentWork->terminate();
             currentWork->wait();
-            _status = Ready;
+            qDebug() << "reset";
         }
-
+        _status = Ready;
     }
 
     Status getStatus() {

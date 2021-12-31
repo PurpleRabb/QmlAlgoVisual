@@ -7,49 +7,70 @@ void QuickSort::run()
         emit algofinished();
         return;
     }
+    qDebug() << "QuickSort";
     quickSortNoRec(values,0,values->length()-1);
     emit updateValue();
     emit algofinished();
 }
 
-int QuickSort::partion(QList<int>* root,int low,int high)
+int QuickSort::partition(QList<int>* data,int l,int r)
 {
-    int part= (*root)[low];
-    while(low<high)
-    {
-        while(low<high&& (*root)[high]>part) high--;
-        (*root)[low]=(*root)[high];
-        while(low<high&& (*root)[low]<part) low++;
-        (*root)[high]=(*root)[low];
+    int x = (*data)[r];	//基准
+    if(l >= r)
+        return l;
+    while(l < r){
+        while(l < r && (*data)[l] < x){
+            l++;
+        }
+        if(l < r){
+            (*data)[r] = (*data)[l];
+            r--;
+        }
+        while(l < r && (*data)[r] > x){
+            r--;
+        }
+        if(l < r){
+            (*data)[l] = (*data)[r];
+            l++;
+        }
     }
-    (*root)[low]=part;
-    return low;
+    (*data)[l] = x;
+    return l;
+
 }
 
-void QuickSort::quickSortNoRec(QList<int>* root,int low,int high)
+void QuickSort::quickSortNoRec(QList<int>* data,int l,int r)
 {
     QStack<int> st;
-    int k;
-    if(low<high)
+    if(l < r)
     {
-        st.push(low);
-        st.push(high);
-        while(!st.empty())
+        int tmp = partition(data,l,r);
+        if(tmp-1 > l)	//左边不止一个元素
         {
-            int j=st.top();st.pop();
-            int i=st.top();st.pop();
+            st.push(tmp-1);
+            st.push(l);
+        }
+        if(tmp+1 < r)
+        {
+            st.push(r);
+            st.push(tmp+1);
+        }
+        while(!st.empty()){
+            int start = st.top();
+            st.pop();
+            int end = st.top();
+            st.pop();
 
-            k=partion(root,i,j);
-
-            if(i<k-1)
+            int tmp = partition(data,start,end);
+            if(tmp-1 > start)	//左边不止一个元素
             {
-                st.push(i);
-                st.push(k-1);
+                st.push(tmp-1);
+                st.push(start);
             }
-            if(k+1<j)
+            if(tmp+1 < end)
             {
-                st.push(k+1);
-                st.push(j);
+                st.push(end);
+                st.push(tmp+1);
             }
         }
     }

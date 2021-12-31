@@ -66,6 +66,7 @@ Window {
             onActivated: {
                 console.log(currentIndex)
                 Sort.switchAlgo(chartView.sortList[currentIndex])
+                chartView.refresh()
             }
             Component.onCompleted: {
                 let len = chartView.sortList.length

@@ -11,7 +11,7 @@ public:
     void run() override;
 
 private:
-    int partion(QList<int>* root,int low,int high);
+    int partition(QList<int>* root,int low,int high);
     void quickSortNoRec(QList<int>* root,int low,int high);
 };
 
