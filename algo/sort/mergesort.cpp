@@ -10,6 +10,7 @@ void MergeSort::run() {
     __MergeSort(values,0,len-1,tmp);
     //emit updateValue();
     delete [] tmp;
+    emit algofinished();
 }
 
 #define IVALUES (*_values)

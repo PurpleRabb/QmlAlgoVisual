@@ -33,4 +33,5 @@ void ShellSort::run()
             emit updateValue();
         }
     }
+    emit algofinished();
 }

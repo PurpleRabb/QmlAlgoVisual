@@ -10,6 +10,7 @@
 #include "insertionsort.h"
 #include "shellsort.h"
 #include "mergesort.h"
+#include "quicksort.h"
 
 
 class Sort : public QObject
@@ -125,6 +126,8 @@ private:
     BaseWork *currentWork;
     ShellSort *ss;
     MergeSort *ms;
+    QuickSort *qs;
+
     QList<int> values;
     QList<QString> sortlist;
     QMap<QString,BaseWork *> sMap;

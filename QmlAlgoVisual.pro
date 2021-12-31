@@ -12,7 +12,8 @@ SOURCES += \
         main.cpp \
         algo/sort/selectionsortwork.cpp \
         algo/sort/shellsort.cpp \
-        algo/sort/sort.cpp
+        algo/sort/sort.cpp \
+        algo/sort/quicksort.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,4 +35,5 @@ HEADERS += \
     algo/sort/insertionsort.h \
     algo/sort/selectionsortwork.h \
     algo/sort/shellsort.h \
-    algo/sort/sort.h
+    algo/sort/sort.h \
+    algo/sort/quicksort.h
