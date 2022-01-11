@@ -4,5 +4,6 @@
         <file>Utils.js</file>
         <file>BarRect.qml</file>
         <file>MyChartView.qml</file>
+        <file>MCanvas.qml</file>
     </qresource>
 </RCC>

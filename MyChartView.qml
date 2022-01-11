@@ -9,6 +9,7 @@ ListView {
     property int barWidth: 20
     property string barColor: "red"
     property string markedColor: "blue"
+    z: 0
 
     leftMargin: spacing
     width: (barCount) * (barWidth + spacing) - spacing + 2 * leftMargin
@@ -22,7 +23,7 @@ ListView {
 
     Component.onCompleted: {
         for(let i = 0; i < values.length; i++) {
-            model.append({BarColor:barColor, Value:values[i]})
+            model.append({BarColor:barColor, Value:values[i],Px:0,Py:0})
         }
     }
 
@@ -63,6 +64,13 @@ ListView {
 
     function clear() {
         model.clear()
+    }
+
+    function getRecPos(i) {
+        if (i >= 0) {
+            let item = model.get(i)
+            return [item.Px,item.Py]
+        }
     }
 
 

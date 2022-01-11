@@ -47,6 +47,7 @@ protected:
         list.append(-1);
         object.insert("Marked",list);
         object.insert("Restored",list);
+        object.insert("Swaped",list);
         return object;
     }
 
@@ -66,6 +67,16 @@ protected:
         marked[0] = v1;
         marked[1] = v2;
         msg["Restored"] = marked;
+        QJsonDocument jsonDoc(msg);
+        return QString(jsonDoc.toJson());
+    }
+
+    QString SWAP(int v1,int v2) {
+        QJsonObject msg = MsgBuilder();
+        QJsonArray swap = msg["Swaped"].toArray();
+        swap[0] = v1;
+        swap[1] = v2;
+        msg["Swaped"] = swap;
         QJsonDocument jsonDoc(msg);
         return QString(jsonDoc.toJson());
     }

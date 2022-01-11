@@ -22,6 +22,8 @@ void SelectionSortWork::run() {
 
         // 将最小的元素a[k] 和 开始的元素a[i] 交换数据.
         if( k != i ) {
+            emit algoStatus(SWAP(k,i));
+            msleep(_speed/2);
             std::swap((*values)[k],(*values)[i]);
         }
 

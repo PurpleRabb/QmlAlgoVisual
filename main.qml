@@ -12,6 +12,12 @@ Window {
     visible: true
     title: qsTr("Alog")
 
+    MCanvas {
+        id: mCanvas
+        width: 800
+        height: 480
+    }
+
 
     MyChartView {
         id: chartView
@@ -26,6 +32,7 @@ Window {
         barWidth: 20
         barColor: "peachpuff"
         markedColor: "plum"
+        property var temp : 0
 
         values: Utils.getRandomValues(barCount,maxValue)
 
@@ -45,6 +52,18 @@ Window {
                 }
                 for (let j=0; j < _msg.Restored.length; j++) {
                     chartView.setSelectedColor(_msg.Restored[j], chartView.barColor);
+                }
+                if (_msg.Swaped[0] >=0 && _msg.Swaped[1] >= 0) {
+                    let _index1 = _msg.Swaped[0]
+                    let _index2 = _msg.Swaped[1]
+                    let _interval = (_index2 - _index1)
+                    console.log("swapIndex  ",_index1,_index2);
+                    let arrowLength = 25
+                    let _x = chartView.x + (_index1 + 1) * chartView.spacing + (_index1 + 0.5) * chartView.barWidth
+                    let _y = chartView.y + arrowLength
+                    let _endX = chartView.x + (_index2+1) * chartView.spacing + (_index2 + 0.5) * chartView.barWidth
+                    //fromx,fromy,tox,toy,spacing,barWidth,interval,arrowLength
+                    mCanvas.drawArrowLineFromXtoY(_x,_y,_endX,_y,chartView.spacing,chartView.barWidth,_interval,arrowLength)
                 }
             }
         }
@@ -108,7 +127,7 @@ Window {
             TextInput {
                 anchors.centerIn: parent
                 id: speedInput
-                text: "300"
+                text: "500"
                 maximumLength: 5
             }
         }
