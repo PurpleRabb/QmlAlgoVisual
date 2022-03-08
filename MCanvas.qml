@@ -56,6 +56,7 @@ Canvas {
   function clear() {
       var ctx = getContext("2d");
       ctx.clearRect(0,0,width,height)
+      requestPaint()
   }
 
   onPaint: {
