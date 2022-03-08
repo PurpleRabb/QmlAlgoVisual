@@ -26,10 +26,10 @@ Window {
 
         anchors.centerIn: parent
         spacing: 5
-        height: 200
+        height: 300
         barCount: 15
-        maxValue: 150
-        barWidth: 20
+        maxValue: 200
+        barWidth: 30
         barColor: "peachpuff"
         markedColor: "plum"
         property var temp : 0
@@ -110,6 +110,7 @@ Window {
             id: btnReset
             onClicked: {
                 Sort.reset() //先停止，再刷新
+                mCanvas.clear()
                 chartView.refresh()
             }
         }
