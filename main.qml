@@ -1,10 +1,10 @@
-import QtQuick 2.0
-import QtQuick.Window 2.3
-import QtCharts 2.3
+import QtQuick
+import QtQuick.Window
+import QtCharts
 import "Utils.js" as Utils
-import Sort 1.0
-import QtQuick.Controls 1.2
-import QtQuick.Layouts 1.3
+import Sort
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Window {
     width: 800
